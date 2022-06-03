@@ -20,7 +20,7 @@ public class AutoAgv extends Actor {
 	public HybridState hybridState;
 	public double endX;
 	public double endY;
-	public Text firstText;
+	public TextClass firstText;
 	public double startX;
 	public double startY;
 
@@ -38,7 +38,7 @@ public class AutoAgv extends Actor {
 		this.curNode = this.graph.nodes[(int) x][(int) y];
 		this.curNode.setState(StateOfNode2D.BUSY);
 		this.endNode = this.graph.nodes[(int) endX][(int) endY];
-		this.firstText = new Text(endX * 32, endY * 32, "DES", 16);
+		this.firstText = new TextClass(endX * 32, endY * 32, "DES", 16);
 		this.path = this.calPathAStar(curNode, endNode);
 		this.sobuocdichuyen = 0;
 		this.thoigiandichuyen = Instant.now().getEpochSecond();

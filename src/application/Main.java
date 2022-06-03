@@ -35,7 +35,7 @@ public class Main extends Application {
 	BorderPane root = new BorderPane();
 	Scene mainScene = new Scene(root);
 	Canvas canvas;
-	GraphicsContext context;
+	public static GraphicsContext context;
 	public static Tile[][] tiles = new Tile[MAP_HEIGHT][MAP_WIDTH];
 
 	KeyHandler keyHandler = new KeyHandler(mainScene);
@@ -90,6 +90,7 @@ public class Main extends Application {
 			new AnimationTimer() {
 				@Override
 				public void handle(long arg0) {
+					
 					update();
 				}
 			}.start();
@@ -102,16 +103,10 @@ public class Main extends Application {
 	}
 
 	public void update() {
-//		Thread d = new Thread();
-//		try {
-//			d.sleep(30);
-//		} catch (InterruptedException e) {
-//			
-//			e.printStackTrace();
-//		}
 		drawBackground();
 		agv.render(context);
 		agv.update();
+//		this.forcasting.calculate();
 	}
 
 	List<Integer> arrayIntegers = new ArrayList<>(Arrays.asList(58, 42, 43, 50, 49, 57, 35, 41, 59));
@@ -127,7 +122,6 @@ public class Main extends Application {
 					break;
 				case 0:
 					tileColor = Color.GHOSTWHITE;
-					dir = "no";
 					break;
 				case 28:
 					tileColor = Color.LIMEGREEN;
@@ -153,7 +147,7 @@ public class Main extends Application {
 					break;
 				default:
 					tileColor = Color.BLACK;
-					dir = "any";
+					dir = "none";
 					break;
 				}
 				tiles[i][j] = new Tile(j * TILE_WIDTH, i * TILE_HEIGHT, TILE_WIDTH, TILE_HEIGHT, tileColor, dir);
@@ -165,5 +159,12 @@ public class Main extends Application {
 	public static void main(String[] args) {
 		launch(args);
 	}
-	
+//	public void initGraph(): void {
+//	    if(Constant.MODE == ModeOfPathPlanning.FRANSEN) {
+//	      this.spaceGraph = new Graph(52, 28, this.danhsachke, this.pathPos);
+//	    } else {
+//	      this.emergencyGraph = new EmergencyGraph(52, 28, this.danhsachke, this.pathPos);
+//	    }
+//	  }
+//	
 }

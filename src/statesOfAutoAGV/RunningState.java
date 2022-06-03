@@ -3,6 +3,7 @@ package statesOfAutoAGV;
 import config.Constant;
 import config.Performance;
 import model.AutoAgv;
+import model.Node2D;
 import model.StateOfNode2D;
 import model.Vector2;
 
@@ -34,14 +35,14 @@ public class RunningState extends HybridState {
 		if(agv.cur + 1 >= agv.path.size()) {
             System.out.println("Loi roi do: "+ (agv.cur + 1));
         }
-        Node2D nodeNext = agv.graph.nodes[agv.path[agv.cur + 1].x][agv.path[agv.cur + 1].y];
+        Node2D nodeNext = agv.graph.nodes[(int)agv.path.elementAt((int)agv.cur+1).x][(int)agv.path.elementAt((int)agv.cur+1).y];
         double shortestDistance = Constant.minDistance(agv, agv.collidedActors);
         if (nodeNext.state == StateOfNode2D.BUSY || shortestDistance < Constant.SAFE_DISTANCE) {
             agv.velocity = Vector2.zero;
             if (agv.waitT != 0) return;
             agv.waitT = Performance.now();
-            (agv.scene as MainScene).forcasting?.
-                addDuration(agv.getAgvID(), new WaitingDuration(Math.floor(agv.waitT/1000)));
+//            (agv.scene as MainScene).forcasting?.
+//                addDuration(agv.getAgvID(), new WaitingDuration(Math.floor(agv.waitT/1000)));
         }
 	}
 }

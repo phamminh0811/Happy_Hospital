@@ -11,9 +11,8 @@ public class Constant {
 		FRANSEN, PROPOSE
 	}
 
-	public static double DURATION() {
-		return 4;
-	}
+	public static double DURATION = 4;
+	public static double SAFE_DISTANCE = 46;
 
 	public static double getLateness(double x) {
 		return 5 * x;

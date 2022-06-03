@@ -10,8 +10,8 @@ public class Agent extends Actor {
 	private Stack<Position> groundPos;
 	private Stack<Position> path;
 	private Stack<Position> vertexs;
-	private Text endText;
-	private Text agentText;
+	private TextClass endText;
+	private TextClass agentText;
 	private AStar astar;
 	private int next = 1;
 	private int id;
@@ -28,8 +28,8 @@ public class Agent extends Actor {
 		this.id = id;
 		this.speed = Math.floor(Math.random() * (this.speed - 10)) + 10;
 
-		this.endText = new Text(endPos.x * 32 + 6, endPos.y * 32, Integer.toString(id), 28);
-		this.agentText = new Text(startPos.x * 32, startPos.y * 32 - 16, Integer.toString(id), 28);
+		this.endText = new TextClass(endPos.x * 32 + 6, endPos.y * 32, Integer.toString(id), 28);
+		this.agentText = new TextClass(startPos.x * 32, startPos.y * 32 - 16, Integer.toString(id), 28);
 
 		this.astar = new AStar(52, 28, startPos, endPos, groundPos);
 		this.path = this.astar.cal();

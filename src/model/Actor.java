@@ -36,23 +36,23 @@ public class Actor extends Sprite {
 				.floor(Math.sqrt((endX - startX) * (endX - startX) + (endY - startY) * (endX - startX)) * 0.085);
 	}
 
-	public void writeDeadline(Text table) {
+	public void writeDeadline(TextClass table) {
 		if (this.agvID != -1) {
 			var enter = "";
 			if (table.text.length() > 0)
 				enter = "\n";
 			table.text = "DES_" + this.agvID + ": " + Constant.secondsToHMS(this.expectedTime) + " ± "
-					+ Constant.DURATION() + enter + table.text;
+					+ Constant.DURATION + enter + table.text;
 		}
 	}
 
-	public void eraseDeadline(Text table) {
+	public void eraseDeadline(TextClass table) {
 		if (this.agvID != -1) {
 			var enter = "";
 			if (table.text.length() > 0)
 				enter = "\n";
 			String erasedStr = "DES_" + this.agvID + ": " + Constant.secondsToHMS(this.expectedTime) + " ± "
-					+ Constant.DURATION() + enter;
+					+ Constant.DURATION + enter;
 			table.text = table.text.replace(erasedStr, "");
 		}
 	}
