@@ -1,16 +1,16 @@
 package classes;
 
-import application.Main;
+import application.MainScene;
 import javafx.scene.CacheHint;
 import javafx.scene.image.ImageView;
 
-public class Sprite extends ImageView {
+public class Sprite extends ImageView implements IDestroyable{
 	public Vector2 velocity;
 	public int x;
 	public int y;	
-	public Main scene;
+	public MainScene scene;
 	public boolean active;
-	public Sprite(Main scene, int x, int y, String type) {
+	public Sprite(MainScene scene, int x, int y, String type) {
 		super("file:sprites/" + type + ".png");
 		this.setCache(true);
 		this.setCacheHint(CacheHint.SPEED);

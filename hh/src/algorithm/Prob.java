@@ -7,7 +7,7 @@ public class Prob {
 		double rng = Math.random();
 		this._rng01 = rng;
 
-		this._rng11 = rng*(1<<32)/(1<<33)*2;
+		this._rng11 = rng*((long)1<<32)/((long)1<<33)*2;
 	}
 	public UniformDistribution uniform(){
 		double min = 0;

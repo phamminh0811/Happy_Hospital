@@ -2,9 +2,12 @@ package classes;
 
 import static config.Constant.*;
 
+import java.io.Serializable;
+
 import config.Constant;
 
-public class Node2D {
+public class Node2D implements Serializable{
+	private static final long serialVersionUID = 1L;
 	final double lambda = 0.4;
 	public int x;
 	public int y;
@@ -45,7 +48,17 @@ public class Node2D {
 		this.t_max = t_max;
 		this.isVirtualNode = isVirtualNode;
 	}
-	
+
+	public Node2D(int x, int y) {
+		this.x = x;
+		this.y = y;
+		this.isVirtualNode = false;
+		this.state = StateOfNode2D.NOT_ALLOW;
+		this.p_random = 0.05;
+		this.t_min = 2000;
+		this.t_max = 3000;
+	}
+
 	public Node2D(int x, int y, boolean isVirtualNode) {
 		this.x = x;
 		this.y = y;
@@ -134,7 +147,13 @@ public class Node2D {
 
 	@Override
 	public String toString() {
-		return "Node2D [x=" + x + ", y=" + y + "]";
+		return "Node2D [lambda=" + lambda + ", x=" + x + ", y=" + y + ", nodeW=" + nodeW + ", nodeN=" + nodeN
+				+ ", nodeS=" + nodeS + ", nodeE=" + nodeE + ", w_edge_W=" + w_edge_W + ", w_edge_N=" + w_edge_N
+				+ ", w_edge_S=" + w_edge_S + ", w_edge_E=" + w_edge_E + ", w=" + w + ", u=" + u + ", state=" + state
+				+ ", p_random=" + p_random + ", t_min=" + t_min + ", t_max=" + t_max + ", nodeVW=" + nodeVW
+				+ ", nodeVN=" + nodeVN + ", nodeVS=" + nodeVS + ", nodeVE=" + nodeVE + ", w_edge_VW=" + w_edge_VW
+				+ ", w_edge_VN=" + w_edge_VN + ", w_edge_VS=" + w_edge_VS + ", w_edge_VE=" + w_edge_VE
+				+ ", isVirtualNode=" + isVirtualNode + ", _weight=" + _weight + "]";
 	}
 
 }

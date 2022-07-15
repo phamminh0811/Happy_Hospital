@@ -1,8 +1,15 @@
 package classes;
 
-public class Position {
+import java.io.Serializable;
+
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+public class Position implements Serializable{
+	private static final long serialVersionUID = 1L;
 	public double x, y;
-	public Position(double x, double y) {
+	@JsonCreator
+	public Position(@JsonProperty("x") double x, @JsonProperty("y") double y) {
 		this.x = x;
 		this.y = y;
 	}

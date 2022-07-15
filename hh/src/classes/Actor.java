@@ -1,21 +1,19 @@
 package classes;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
 
-import application.Main;
+import application.MainScene;
 import config.Constant;
 import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.VBox;
 
 public class Actor extends Sprite {
 	private static int _id = 0;
 	private int agvID;
-	private double expectedTime;
-	public Set<Actor> collidedActors;
+	private double expectedTime = 0;
+	public ArrayList<Actor> collidedActors;
 
-	public Actor(Main scene, int x, int y, String texture) {
+	public Actor(MainScene scene, int x, int y, String texture) {
 		super(scene, x, y, texture);
 		scene.add(this);
 		if (texture == "agv") {
@@ -24,7 +22,7 @@ public class Actor extends Sprite {
 		} else {
 			this.agvID = -1;
 		}
-		this.collidedActors = new HashSet<Actor>();
+		this.collidedActors = new ArrayList<>();
 	}
 
 	public int getAgvID() {
@@ -44,7 +42,7 @@ public class Actor extends Sprite {
 		if (this.agvID != -1) {
 			Label text = new Label(
 					"DES_" + this.agvID + ": " + Constant.secondsToHMS(this.expectedTime) + " ± " + Constant.DURATION);
-			text.setStyle("-fx-font-size: 14");
+			text.getStyleClass().add("time-table");
 			table.getChildren().add(text);
 		}
 	}
@@ -58,12 +56,8 @@ public class Actor extends Sprite {
 	}
 
 	public void freeze(Actor actor) {
-		if (this.collidedActors == null) {
-			this.collidedActors = new HashSet<>();
-		}
-		if (!this.collidedActors.contains(actor)) {
+		if (collidedActors.contains(actor))
 			this.collidedActors.add(actor);
-		}
 	}
 
 }

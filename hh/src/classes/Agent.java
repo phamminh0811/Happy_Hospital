@@ -1,27 +1,34 @@
 package classes;
 
+import static config.Config.TILE_HEIGHT;
+import static config.Config.TILE_WIDTH;
+
 import java.util.ArrayList;
 import java.util.Random;
-import java.util.Stack;
-import static config.Config.*;
+
 import algorithm.AStar;
-import application.Main;
+import application.MainScene;
+import classes.window.Window;
+import javafx.animation.KeyFrame;
+import javafx.animation.KeyValue;
+import javafx.animation.Timeline;
+import javafx.util.Duration;
 
 public class Agent extends Actor {
-	public  Position startPos;
-	public  Position endPos;
-	public  ArrayList<Position> groundPos;
-	public  ArrayList<Position> path;
-	public  ArrayList<Position> vertexs;
-	public  Text endText;
-	public  Text agentText;
-	public  AStar astar;
-	public  int next = 1;
-	public  int id;
+	public Position startPos;
+	public Position endPos;
+	public ArrayList<Position> groundPos;
+	public ArrayList<Position> path;
+	public ArrayList<Position> vertexs;
+	public XText endText;
+	public XText agentText;
+	public AStar astar;
+	public int next = 1;
+	public int id;
 	public boolean isOverlap = false;
 	public double speed;
 
-	public Agent(Main scene, Position startPos, Position endPos, ArrayList<Position> groundPos, int id) {
+	public Agent(MainScene scene, Position startPos, Position endPos, ArrayList<Position> groundPos, int id) {
 		super(scene, (int) startPos.x, (int) startPos.y, "agent");
 		this.startPos = startPos;
 		this.endPos = endPos;
@@ -29,14 +36,14 @@ public class Agent extends Actor {
 		this.path = new ArrayList<Position>();
 		this.vertexs = new ArrayList<Position>();
 		this.id = id;
-		this.speed = 0.2;
+		this.speed = new Random().nextDouble(0.4, 0.5);
 
-		this.endText = new Text(this.scene, endPos.x * TILE_WIDTH + 6, endPos.y * TILE_HEIGHT , String.valueOf(id), "");
+		this.endText = new XText(this.scene, endPos.x * TILE_WIDTH + 6, endPos.y * TILE_HEIGHT, String.valueOf(id), "");
 		this.endText.getStyleClass().add("agent-end-text");
-		
-		this.agentText = new Text(this.scene, startPos.x, startPos.y, String.valueOf(id), "");
+
+		this.agentText = new XText(this.scene, startPos.x, startPos.y, String.valueOf(id), "");
 		this.agentText.getStyleClass().add("agent-text");
-		
+
 		this.astar = new AStar(52, 28, startPos, endPos, groundPos);
 		this.path = this.astar.cal();
 		this.initVertexs();
@@ -50,20 +57,21 @@ public class Agent extends Actor {
 			this.eliminate();
 			return;
 		}
-		if (Math.abs(this.vertexs.get(this.next).x * 20 - this.getTranslateX()) > 1
-				|| Math.abs(this.vertexs.get(this.next).y * 20 - this.getTranslateY()) > 1) {
-			this.scene.physics.moveTo(this, new Vector2(this.vertexs.get(this.next).x * 20, this.vertexs.get(this.next).y * 20),
-					this.speed);
-			this.agentText.setPosition(this.getTranslateX(), this.getTranslateY() - 10);
+		if (Math.abs(this.vertexs.get(this.next).x * 32 - this.getTranslateX()) > 1
+				|| Math.abs(this.vertexs.get(this.next).y * 32 - this.getTranslateY()) > 1) {
+			this.scene.physics.moveTo(this,
+					new Vector2(this.vertexs.get(this.next).x * 32, this.vertexs.get(this.next).y * 32), this.speed);
+			this.agentText.setPosition(this.getTranslateX(), this.getTranslateY() - 16);
 		} else {
 			this.next++;
 		}
 	}
 
 	public void eliminate() {
+		this.destroy();
+		this.scene.destroyAgentHandler(this);
 		this.agentText.destroy();
 		this.endText.destroy();
-		this.destroy();
 	}
 
 	public void addRandomVertexs(Position start, Position end) {
@@ -140,4 +148,29 @@ public class Agent extends Actor {
 		return this.id;
 	}
 
+	public void handleOverlap() {
+		if (this.isOverlap)
+			return;
+		this.isOverlap = true;
+		Window.setTimeout(new LambdaExpression() {
+			@Override
+			public void expression() {
+				isOverlap = false;
+			}
+		}, 4000);
+		double r = Math.random();
+		if (r < 0.5) {
+			return;
+		} else {
+//			this.setVelocity(Vector2.zero);
+			double old_speed = this.speed;
+			this.speed = 0;
+			Window.setTimeout(new LambdaExpression() {
+				@Override
+				public void expression() {
+					speed = old_speed;
+				}
+			}, 2000);
+		}
+	}
 }

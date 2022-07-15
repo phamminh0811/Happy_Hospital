@@ -1,9 +1,9 @@
 package config;
 
-import application.Main;
+import application.MainScene;
 
 public class Performance {
 	public static double now() {
-		return System.currentTimeMillis() - Main.startTimeMilis;
+		return System.currentTimeMillis() - MainScene.startTimeMilis;
 	}
 }

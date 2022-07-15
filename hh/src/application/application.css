@@ -4,52 +4,63 @@
 -fx-fill: white;
 -fx-stroke: black;
 -fx-stroke-width: 1;
--fx-font-size: 18px;
+-fx-font-size: 28px;
 }
 .agent-text{
 -fx-font-family: "Courier New";
 -fx-font-weight: bold;
 -fx-fill: white;
 -fx-stroke: black;
--fx-stroke-width: 0.5;
--fx-font-size: 12px;
+-fx-stroke-width: 1;
+-fx-font-size: 24px;
 }
 .agv-text{
 -fx-font-family: "Courier New";
 -fx-font-weight: bold;
 -fx-fill: #00FF00;
 -fx-stroke: black;
--fx-stroke-width: 0.5;
--fx-font-size: 12px;
+-fx-stroke-width: 1;
+-fx-font-size: 24px;
 }
 .agv-des{
 -fx-font-family: "Courier New";
 -fx-font-weight: bold;
 -fx-fill: #00FF00;
--fx-font-size: 12px;
+-fx-font-size: 18px;
 -fx-stroke: black;
--fx-stroke-width: 0.5;
+-fx-stroke-width: 1;
 }
 .auto-agv-des{
 -fx-font-family: "Courier New";
 -fx-font-weight: bold;
 -fx-fill: #FF0000;
--fx-font-size: 12px;
+-fx-font-size: 18px;
 -fx-stroke: black;
--fx-stroke-width: 0.5;
+-fx-stroke-width: 1;
 }
 .hfn{
 -fx-font-family: "Courier New";
 -fx-font-size: 18;
--fx-text-fill: #ff0000;
+-fx-text-fill: #D8202A;
 -fx-font-weight: bold;
 }
 .toast{
 -fx-background-color: #ffffff;
--fx-padding: 8px;
+-fx-padding: 12px;
 -fx-color: #E6E6E6;
--fx-font-size: 24px;
+-fx-font-size: 30px;
 -fx-font-family: "Courier New";
 -fx-background-radius: 30 30 30 30;
 -fx-font-weight: bold;
+}
+.time-table{
+-fx-font-family: "Courier New";
+-fx-font-size: 16px;
+-fx-font-weight: 800;
+}
+.header{
+-fx-fill: #FF0000;
+-fx-font-family: "Courier New";
+-fx-font-weight: bold;
+-fx-font-size: 20px;
 }

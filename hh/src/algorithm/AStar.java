@@ -1,11 +1,16 @@
 package algorithm;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.net.Socket;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Stack;
 
 import classes.Position;
+import socket.Message;
+import socket.Path;
 
 class Spot {
 	public int i;
@@ -58,13 +63,16 @@ public class AStar {
 	public Stack<Spot> ableSpot = new Stack<Spot>();
 	public Spot[][] grid;
 	public Stack<Spot> path = new Stack<Spot>();
-
+	private ArrayList<Position> groundPos;
+	private Position startPos, endPos;
 	public AStar(int width, int height, Position startPos, Position endPos, ArrayList<Position> groundPos) {
 		this.width = width;
 		this.height = height;
 		this.start = new Spot((int) startPos.x, (int) startPos.y);
 		this.end = new Spot((int) endPos.x, (int) endPos.y);
-
+		this.groundPos = groundPos;
+		this.startPos = startPos;
+		this.endPos = endPos;
 		this.grid = new Spot[width][height];
 		for (int i = 0; i < width; i++) {
 			for (int j = 0; j < height; j++) {
@@ -80,84 +88,29 @@ public class AStar {
 			}
 		}
 	}
-
-	private double heuristic(Spot spot1, Spot spot2) {
-		return Math.abs(spot1.i - spot2.i) + Math.abs(spot1.j - spot2.j);
-	}
-
-	private double heuristic2(Spot spot1, Spot spot2) {
-		return Math.sqrt((spot1.i - spot2.i) * (spot1.i - spot2.i) + (spot1.j - spot2.j) * (spot1.j - spot2.j));
-	}
-
-	private boolean isInclude(Spot spot, ArrayList<Spot> closeSet) {
-		for (int x = 0; x < closeSet.size(); x++) {
-			if (spot.i == closeSet.get(x).i && spot.j == closeSet.get(x).j)
-				return true;
-		}
-		return false;
-	}
-
+	
 	public ArrayList<Position> cal() {
-		ArrayList<Spot> openSet = new ArrayList<Spot>();
-		ArrayList<Spot> closeSet = new ArrayList<Spot>();
-		openSet.add(this.grid[this.start.i][this.start.j]);
-		while (!openSet.isEmpty()) {
-			int winner = 0;
-			for (int i = 0; i < openSet.size(); i++) {
-				if (openSet.get(i).f < openSet.get(winner).f) {
-					winner = i;
-				}
+		Path recvMsg = null;
+		Socket socket = null;
+		try {
+			socket = new Socket("localhost", 3100);
+			ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
+			ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
+			Message msg = new Message(52, 28, this.startPos, this.endPos, this.groundPos);
+			
+			oos.writeObject(msg);
+			try {
+				recvMsg = (Path) ois.readObject();
+			} catch (ClassNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
-			Spot current = openSet.get(winner);
-			if (openSet.get(winner).equal(this.end)) {
-				
-				Spot cur = this.grid[this.end.i][this.end.j];
-				this.path.push(cur);
-				
-				while (cur.previous != null) {
-					this.path.push(cur.previous);
-					cur = cur.previous;
-				}
-				
-				Collections.reverse(this.path);
-				ArrayList<Position> result = new ArrayList<Position>();
-				for (int k = 0; k < this.path.size(); k++) {
-					result.add(new Position(this.path.elementAt(k).i, this.path.elementAt(k).j));
-				}
-				return result;
-			}
-			openSet.remove(winner);
-			closeSet.add(current);
-			Stack<Spot> neighbors = current.neighbors;
-			for (int i = 0; i < neighbors.size(); i++) {
-				Spot neighbor = neighbors.elementAt(i);
-				if (!this.isInclude(neighbor, closeSet)) {
-					double tempG = current.g + 1;
-					if (this.isInclude(neighbor, openSet)) {
-						if (tempG < neighbor.g) {
-							neighbor.g = tempG;
-						}
-					} else {
-						neighbor.g = tempG;
-						openSet.add(neighbor);
-					}
-
-					neighbor.h = this.heuristic2(neighbor, this.end);
-					neighbor.f = neighbor.h + neighbor.g;
-					neighbor.previous = current;
-				} else {
-					double tempG = current.g + 1;
-					if (tempG < neighbor.g) {
-						openSet.add(neighbor);
-						int index = closeSet.indexOf(neighbor);
-						if (index > -1) {
-							closeSet.remove(index);
-						}
-					}
-				}
-			}
+			ois.close();
+			oos.close();
+			socket.close();
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
-		System.out.println("Path not found!");
-		return null;
+		return recvMsg.path;
 	}
 }

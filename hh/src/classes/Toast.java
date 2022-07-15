@@ -2,7 +2,7 @@ package classes;
 
 import static config.Config.WINDOW_HEIGHT;
 
-import application.Main;
+import application.MainScene;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
@@ -10,12 +10,12 @@ import javafx.scene.control.Label;
 import javafx.util.Duration;
 
 public class Toast {
-	Main scene;
+	MainScene scene;
 	Timeline timeLine;
 
-	public Toast(Main scene, String msg, long duration) {
+	public Toast(MainScene scene, String msg, long duration) {
 		this.scene = scene;
-		Label toast = new Label("Di chuyển không hợp lệ");
+		Label toast = new Label(msg);
 		toast.setTranslateY(WINDOW_HEIGHT / 2 - 100);
 		toast.getStyleClass().add("toast");
 		toast.setOpacity(0);
@@ -33,6 +33,10 @@ public class Toast {
 
 	public void play() {
 		this.timeLine.play();
+		this.clear();
+	}
+	public void clear() {
+		this.scene.stackPane.getChildren().remove(this);
 	}
 
 }

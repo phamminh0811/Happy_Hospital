@@ -1,7 +1,5 @@
 package classes;
 
-import java.util.Objects;
-
 public class Vector2 {
 	public static double distance(Vector2 a, Vector2 b) {
 		return Math.sqrt(Math.pow(a.x-b.x, 2)+Math.pow(a.y-b.y, 2));
@@ -9,11 +7,11 @@ public class Vector2 {
 	public static double magnitude(Vector2 a) {
 		return Math.sqrt(Math.pow(a.x, 2)+Math.pow(a.y, 2));
 	}
-	public static Vector2 zero = new Vector2(0, 0);
-	public static Vector2 up = new Vector2(0, 1);
-	public static Vector2 down = new Vector2(0, -1);
-	public static Vector2 left = new Vector2(-1, 0);
-	public static Vector2 right = new Vector2(1, 0);
+	public final static Vector2 zero = new Vector2(0, 0);
+	public final static Vector2 up = new Vector2(0, 1);
+	public final static Vector2 down = new Vector2(0, -1);
+	public final static Vector2 left = new Vector2(-1, 0);
+	public final static Vector2 right = new Vector2(1, 0);
 	
 	public double x, y;
 	public Vector2(double x, double y) {

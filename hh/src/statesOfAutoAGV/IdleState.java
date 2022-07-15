@@ -1,9 +1,6 @@
 package statesOfAutoAGV;
 
-import java.time.Instant;
-
-import application.Main;
-import classes.Agv;
+import application.MainScene;
 import classes.AutoAgv;
 import config.Constant;
 import config.Performance;
@@ -24,12 +21,11 @@ public class IdleState extends HybridState {
 				this._calculated = true;
 				double finish = this._start / 1000;
 				double expectedTime = agv.getExpectedTime();
-				Main mainScene = agv.scene;
+				MainScene mainScene = agv.scene;
 				if (finish >= expectedTime - Constant.DURATION && finish <= expectedTime + Constant.DURATION) {
 					return;
 				} else {
-					double diff = Math.max(expectedTime - Constant.DURATION - finish,
-							finish - expectedTime - Constant.DURATION);
+					double diff = Math.max(expectedTime - Constant.DURATION - finish, finish - expectedTime - Constant.DURATION);
 					double lateness = Constant.getLateness(diff);
 					mainScene.setHarmfullness(mainScene.getHarmfullness() + lateness);
 				}

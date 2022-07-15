@@ -12,7 +12,6 @@ import config.Performance;
 public class Forcasting {
 	public Map<Integer, Set<WaitingDuration>> waitingAutoAgv;
 	private Set<Integer> doneAutoAgv;
-	private double doNothing = 0;
 	public double averageAverageWaitingTime = 0;
 
 	public Forcasting() {

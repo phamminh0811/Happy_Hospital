@@ -41,7 +41,7 @@
 .hfn{
 -fx-font-family: "Courier New";
 -fx-font-size: 18;
--fx-text-fill: #ff0000;
+-fx-text-fill: #D8202A;
 -fx-font-weight: bold;
 }
 .toast{
@@ -52,4 +52,8 @@
 -fx-font-family: "Courier New";
 -fx-background-radius: 30 30 30 30;
 -fx-font-weight: bold;
+}
+.time-table{
+-fx-font-family: "Courier New";
+-fx-font-size: 8px;
 }

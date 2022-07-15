@@ -1,13 +1,14 @@
 package classes;
 
+import static config.Config.TILE_HEIGHT;
+import static config.Config.TILE_WIDTH;
+
 import java.util.ArrayList;
 
-import application.Main;
+import application.MainScene;
 import config.Performance;
-import javafx.scene.control.ScrollPane;
 import statesOfAutoAGV.HybridState;
 import statesOfAutoAGV.RunningState;
-
 public class AutoAgv extends Actor {
 	public Graph graph;
 	public ArrayList<Node2D> path;
@@ -18,16 +19,18 @@ public class AutoAgv extends Actor {
 	public HybridState hybridState;
 	public double endX;
 	public double endY;
-	public Text firstText;
+	public XText firstText;
+	
 	public double startX;
+	
 	public double startY;
 
-	public AutoAgv(Main scene, int x, int y, int endX, int endY, Graph graph) {
+	public AutoAgv(MainScene scene, int x, int y, int endX, int endY, Graph graph) {
 		super(scene, x, y, "agv");
-		this.startX = x * 20;
-		this.startY = y * 20;
-		this.endX = endX * 20;
-		this.endY = endY * 20;
+		this.startX = x * TILE_WIDTH;
+		this.startY = y * TILE_HEIGHT;
+		this.endX = endX * TILE_WIDTH;
+		this.endY = endY * TILE_HEIGHT;
 
 		this.graph = graph;
 
@@ -37,15 +40,13 @@ public class AutoAgv extends Actor {
 		this.curNode.setState(StateOfNode2D.BUSY);
 		this.endNode = this.graph.nodes[endX][endY];
 
-		this.firstText = new Text(this.scene, this.endX, this.endY, "DES", "");
+		this.firstText = new XText(this.scene, this.endX, this.endY - 5, "DES", "");
 		this.firstText.getStyleClass().add("auto-agv-des");
 
 		this.path = this.calPathAStar(this.curNode, this.endNode);
-
-		System.out.println(this.curNode + "-" + this.endNode);
 		this.sobuocdichuyen = 0;
 		this.thoigiandichuyen = Performance.now();
-		this.estimateArrivalTime(x * 20, y * 20, endX * 20, endY * 20);
+		this.estimateArrivalTime(x * TILE_WIDTH, y * TILE_HEIGHT, endX * TILE_WIDTH, endY * TILE_HEIGHT);
 		this.hybridState = new RunningState(false);
 	}
 
@@ -60,34 +61,32 @@ public class AutoAgv extends Actor {
 	}
 
 	public void changeTarget() {
-		Main scene = this.scene;
-		int[] agvsToGate1 = scene.mapOfExits.get("Gate1");
-		int[] agvsToGate2 = scene.mapOfExits.get("Gate2");
+		MainScene mainScene = this.scene;
+		int[] agvsToGate1 = mainScene.mapOfExits.get("Gate1");
+		int[] agvsToGate2 = mainScene.mapOfExits.get("Gate2");
 		String choosenGate = agvsToGate1[2] < agvsToGate2[2] ? "Gate1" : "Gate2";
-		int[] newArray = scene.mapOfExits.get(choosenGate);
+		int[] newArray = mainScene.mapOfExits.get(choosenGate);
 		newArray[2]++;
-		scene.mapOfExits.put(choosenGate, newArray);
+		mainScene.mapOfExits.put(choosenGate, newArray);
 
 		this.startX = this.endX;
 		this.startY = this.endY;
 
 		int xEnd = newArray[0];
 		int yEnd = newArray[1];
-		this.endX = xEnd * 20;
-		this.endY = yEnd * 20;
 
-		int finalAGVs = scene.mapOfExits.get(choosenGate)[2];
+		this.endX = xEnd * TILE_WIDTH;
+		this.endY = yEnd * TILE_HEIGHT;
+
+		int finalAGVs = (mainScene.mapOfExits.get(choosenGate))[2];
 
 		this.endNode = this.graph.nodes[xEnd][yEnd];
-		this.firstText = new Text(this.scene, xEnd, yEnd, "DES_" + finalAGVs,
-				"-fx-font-family: \"Courier New\";" + "-fx-font-weight: 900;" + " -fx-fill: red;"
-						+ " -fx-stroke: black;" + " -fx-stroke-width: 1;" + " -fx-font-size: 18px");
+		this.firstText = new XText(this.scene, xEnd - 2, yEnd - 1, "DES_" + finalAGVs, "");
+		this.firstText.getStyleClass().add("auto-agv-des");
 		this.path = this.calPathAStar(this.curNode, this.endNode);
 		this.cur = 0;
 		this.sobuocdichuyen = 0;
 		this.thoigiandichuyen = Performance.now();
-		this.estimateArrivalTime(20 * this.startX, 20 * this.startY, this.endX * 20, this.endY * 20);
+		this.estimateArrivalTime(this.startX * TILE_WIDTH, this.startY*TILE_HEIGHT, this.endX * TILE_WIDTH, this.endY * TILE_HEIGHT);
 	}
-
-
 }

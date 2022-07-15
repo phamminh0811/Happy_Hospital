@@ -2,8 +2,7 @@ package statesOfAutoAGV;
 
 import classes.AutoAgv;
 
-public class HybridState {
-	public HybridState() {};
+public abstract class HybridState {
 	public void move(AutoAgv agv) {
 		
 	}

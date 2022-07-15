@@ -1,17 +1,19 @@
 package config;
 
+import java.util.ArrayList;
 import java.util.Set;
 
 import classes.Actor;
 import classes.Node2D;
+import classes.Vector2;
 
 public class Constant {
 	public static enum ModeOfPathPlanning {
 		FRANSEN, PROPOSE
 	}
 
-	public static double DURATION = 4;
-	public static double SAFE_DISTANCE = 46;
+	public final static double DURATION = 4;
+	public final static double SAFE_DISTANCE = 46;
 
 	public static double getLateness(double x) {
 		return 5 * x;
@@ -36,22 +38,19 @@ public class Constant {
 		return hDisplay + ":" + mDisplay + ":" + sDisplay;
 	}
 
-	public static boolean validDestination(double destX, double destY, double x, double y) {
-		if ((destY == 14 || destY == 13) && ((destX >= 0 && destX <= 5) || (destX >= 45 && destX <= 50)))
-			return false;
-		double d = Math.sqrt((destX - x) * (destX - x) + (destY - y) * (destY - y));
-		if (d * 20 < 10)
-			return false;
-		return true;
-	}
+	public static boolean validDestination(double destX, double destY, int x, int y){
+        if((destY == 14 || destY == 13) && ((destX >= 0 && destX <= 5) || (destX >= 45 && destX <= 50)))
+            return false; 
+        var d = Math.sqrt((destX - x)*(destX - x) + (destY - y)*(destY-y));
+        if(d*32 < 10)
+            return false;
+        return true;
+    }
 
-	public static double minDistance(Actor actor, Set<Actor> otherActors) {
+	public static double minDistance(Actor actor,  ArrayList<Actor> otherActors) {
 		double dist = Double.POSITIVE_INFINITY;
 		for (Actor element : otherActors) {
-			double smaller = Math.sqrt((element.getTranslateX() - actor.getTranslateX())
-					* (element.getTranslateX() - actor.getTranslateX())
-					+ (element.getTranslateY() - actor.getTranslateY())
-							* (element.getTranslateY() - actor.getTranslateY()));
+			double smaller = Vector2.distance(actor.getPosition(), element.getPosition());
 			if (dist > smaller)
 				dist = smaller;
 		}
